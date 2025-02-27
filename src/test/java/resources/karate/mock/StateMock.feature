@@ -1,51 +1,67 @@
 Feature: Mocked API para el endpoint /state
 
 Background:
-  * configure server { cors: true }
-  * def estados =
-  """
-  [
-    { "id": 1, "name": "Nuevo" },
-    { "id": 2, "name": "Validación CCI" },
-    { "id": 3, "name": "En prueba técnica" }
-  ]
-  """
+  * configure cors = true
+  * def curId = 19
+  * def nextId = function(){ return ++curId}
+  * def estados = {}
+  * estados[1] = { id: 1, name: 'Nuevo' }
+  * estados[2] = { id: 2, name: 'Validación CCI' }
+  * estados[3] = { id: 3, name: 'En prueba técnica' }
+  * estados[4] = { id: 4, name: 'Expiró prueba' }
+  * estados[5] = { id: 5, name: 'Terminó prueba' }
+  * estados[6] = { id: 6, name: 'Descartado en prueba técnica' }
+  * estados[7] = { id: 7, name: 'Aceptado en prueba técnica' }
+  * estados[8] = { id: 8, name: 'Entrevista LT Accenture' }
+  * estados[9] = { id: 9, name: 'Descartado LT Accenture' }
+  * estados[10] = { id: 10, name: 'Aceptado LT Accenture' }
+  * estados[11] = { id: 11, name: 'Entrevista Cliente' }
+  * estados[12] = { id: 12, name: 'Descartado por cliente' }
+  * estados[13] = { id: 13, name: 'Aceptado por cliente' }
+  * estados[14] = { id: 14, name: 'Validación BGC' }
+  * estados[15] = { id: 15, name: 'Descartado en BGC' }
+  * estados[16] = { id: 16, name: 'Aceptado en BGC' }
+  * estados[17] = { id: 17, name: 'Declina' }
+  * estados[18] = { id: 18, name: 'Acepta' }
+  * estados[19] = { id: 19, name: 'Ingreso' }
 
-Scenario: Obtener un estado por ID
-  * def id = karate.extract(request.path, '/state/(\\d+)', 1)
-  * def estado = karate.filter(estados, function(e){ return e.id == id })[0]
-  * def responseBody = estado ? { status: 200, body: estado } : { status: 404, body: {} }
-  * karate.response = responseBody
+Scenario: pathMatches('/state/{id}') && methodIs('get')
+  * def id = pathParams.id
+  * def response = estados[id] ? estados[id] : { error: 'State not found' }
+  * def responseStatus = estados[id] ? 200 : 404
 
-Scenario: Obtener todos los estados
-  * karate.response = { status: 200, body: estados }
+Scenario: pathMatches('/state') && methodIs('get')
+  * def response = $estados.*
+  * def responseStatus = 200
 
-Scenario: Crear un nuevo estado
-  * def nuevoEstado = request
-  * if (!nuevoEstado.name || nuevoEstado.name.trim() == '') 
-    * karate.response = { status: 400, body: { error: "State cannot be null" } }
-  * else if (karate.filter(estados, function(e){ return e.name == nuevoEstado.name }).length > 0)
-    * karate.response = { status: 409, body: { error: "State already exists" } }
-  * else 
-    * def newId = estados.length + 1
-    * def createdState = { id: newId, name: nuevoEstado.name }
-    * estados = estados + createdState
-    * karate.response = { status: 201, body: createdState }
+Scenario: pathMatches('/state') && methodIs('post')
+  * def nombreValido = karate.get('request.name', '').trim()
+  * if (nombreValido == '') karate.abort({ error: 'State cannot be null' }, 400)
+  * if (karate.filterKeys(estados, { name: nombreValido }).length > 0) karate.abort({ error: 'State already exists' }, 409)
 
-Scenario: Actualizar un estado
-  * def id = karate.extract(request.path, '/state/(\\d+)', 1)
-  * def estadoIndex = karate.findIndex(estados, function(e){ return e.id == id })
-  * if (estadoIndex == -1) 
-    * karate.response = { status: 404, body: { error: "State not found" } }
-  * else 
-    * estados[estadoIndex] = { id: id, name: request.name }
-    * karate.response = { status: 200, body: estados[estadoIndex] }
+  # Generar un nuevo ID asegurándonos de que es un número
+  * def newId = nextId()
 
-Scenario: Eliminar un estado
-  * def id = karate.extract(request.path, '/state/(\\d+)', 1)
-  * def estadoIndex = karate.findIndex(estados, function(e){ return e.id == id })
-  * if (estadoIndex == -1) 
-    * karate.response = { status: 404, body: { error: "State not found" } }
-  * else 
-    * estados = karate.removeAt(estados, estadoIndex)
-    * karate.response = { status: 204 }
+  # Crear el nuevo estado con ID numérico
+  * def createdState = { id: #(newId), name: #(nombreValido) }
+
+  # Almacenar en el mock de estados
+  * eval estados[newId] = createdState  
+
+  # Responder con el estado creado
+  * def response = createdState
+  * def responseStatus = 201
+
+Scenario: pathMatches('/state/{id}') && methodIs('put')
+  * def id = pathParams.id
+  * def response = estados[id] ? estados[id] = request : { error: 'State not found' }
+  * def responseStatus = estados[id] ? 200 : 404
+
+Scenario: pathMatches('/state/{id}') && methodIs('delete')
+  * def id = parseInt(pathParams.id)   
+  * def estadoExiste = estados[id]
+  * def responseStatus = estadoExiste ? 204 : 404
+  * def response = estadoExiste ? { message: 'State deleted' } : { error: 'State not found' }
+  * if (estadoExiste) delete estados[id]
+  * if (responseStatus == 500) response = estados[id] ? estados[id] : { error: 'State not found' }
+  * def responseStatus = estados[id] ? 204 : 202

@@ -1,3 +1,24 @@
 {
+    "java.project.sourcePaths": [
+        "src/main/java",
+        "src/test/java"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "target/dependency/**/*.jar"
+    ],
+    "java.test.config": {
+        "workingDirectory": "${workspaceFolder}",
+        "vmargs": [
+            "-Dkarate.options=--verbose"
+        ]
+    },
+    "java.classPath": [
+        "${workspaceFolder}/target/classes",
+        "${workspaceFolder}/target/test-classes",
+        "${workspaceFolder}/src/test/resources"
+    ],
+    "editor.formatOnSave": true,
+    "files.autoSave": "afterDelay",
     "java.configuration.updateBuildConfiguration": "interactive"
 }

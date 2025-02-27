@@ -12,38 +12,50 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>3.5.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.14.0</version>
                 <configuration>
                     <source>21</source>
                     <target>21</target>
                 </configuration>
             </plugin>
-            
+
+             <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>exec-maven-plugin</artifactId>
+    <version>3.5.0</version>
+            <configuration>
+                <classpathScope>test</classpathScope>
+            </configuration>
+</plugin>
         </plugins>
         
-    <testResources>
-        <testResource>
-            <directory>src/test/resources</directory>
-        </testResource>
-    </testResources>
-</build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+    </build>
     
     <dependencies>
+
         <dependency>
             <groupId>com.intuit.karate</groupId>
-            <artifactId>karate-netty</artifactId>
-            <version>0.9.3.RC1</version>
+            <artifactId>karate-core</artifactId>
+            <version>1.4.1</version>
         </dependency>
+
         <dependency>
             <groupId>com.intuit.karate</groupId>
             <artifactId>karate-junit5</artifactId>
             <version>1.4.1</version>
+            <scope>test</scope>
         </dependency>
+        
     </dependencies>
 
     <reporting>
@@ -60,6 +72,9 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+        <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/exec-maven-plugin -->
+
+
         </plugins>
     </reporting>
 </project>
