@@ -54,7 +54,7 @@ Scenario: pathMatches('/state') && methodIs('post')
 
 Scenario: pathMatches('/state/{id}') && methodIs('put')
   * def id = pathParams.id
-  * def response = estados[id] ? estados[id] = request : { error: 'State not found' }
+  * def response = estados[id] ? estados[id] = { id: id, name: request.name } : { error: 'State not found' }
   * def responseStatus = estados[id] ? 200 : 404
 
 Scenario: pathMatches('/state/{id}') && methodIs('delete')
