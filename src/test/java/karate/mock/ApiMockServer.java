@@ -3,12 +3,12 @@ package karate.mock;
 import java.io.*;
 import java.util.Scanner;
 
-public class StateMockServer {
+public class ApiMockServer {
     public static void main(String[] args) {
         final Process process;
         try {
             // Comando para ejecutar Karate Mock Server
-            String command = "java -jar libs/karate-1.4.1.jar -m src/test/java/resources/karate/mock/StateMock.feature -p 8080";
+            String command = "java -jar libs/karate-1.4.1.jar -m src/test/java/resources/karate/mock/ApiMock.feature -p 8080";
 
             // Iniciar el proceso
             ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", command);

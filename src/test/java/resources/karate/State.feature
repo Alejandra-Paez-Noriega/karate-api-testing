@@ -1,7 +1,7 @@
-Feature: Pruebas automatizadas para el endpoint /state
+Feature: Pruebas automatizadas para el endpoint /api/state
 
   Background:
-    * url 'http://localhost:8080/state'
+    * url 'http://localhost:8080/api/state'
 
   Scenario Outline: Obtener un estado por ID
     Given path '<id>'
@@ -10,26 +10,26 @@ Feature: Pruebas automatizadas para el endpoint /state
     And match response == { id: <id>, name: <name> }
 
     Examples:
-      | id | name                                   |
-      | 1  | "Nuevo"                                |
-      | 2  | "Validación CCI"                       |
-      | 3  | "En prueba técnica"                    |
-      | 4  | "Expiró prueba"                        |
-      | 5  | "Terminó prueba"                       |
-      | 6  | "Descartado en prueba técnica"         |
-      | 7  | "Aceptado en prueba técnica"           |
-      | 8  | "Entrevista LT Accenture"              |
-      | 9  | "Descartado LT Accenture"              |
-      | 10 | "Aceptado LT Accenture"                |
-      | 11 | "Entrevista Cliente"                   |
-      | 12 | "Descartado por cliente"               |
-      | 13 | "Aceptado por cliente"                 |
-      | 14 | "Validación BGC"                       |
-      | 15 | "Descartado en BGC"                    |
-      | 16 | "Aceptado en BGC"                      |
-      | 17 | "Declina"                              |
-      | 18 | "Acepta"                               |
-      | 19 | "Ingreso"                              |
+      | id | name                                |
+      | 1  | "Nuevo"                             |
+      | 2  | "Validación CCI"                    |
+      | 3  | "En prueba técnica"                 |
+      | 4  | "Expiró prueba"                     |
+      | 5  | "Terminó prueba"                    |
+      | 6  | "Descartado en prueba técnica"      |
+      | 7  | "Aceptado en prueba técnica"        |
+      | 8  | "Entrevista LT Accenture"           |
+      | 9  | "Descartado LT Accenture"           |
+      | 10 | "Aceptado LT Accenture"             |
+      | 11 | "Entrevista Cliente"                |
+      | 12 | "Descartado por cliente"            |
+      | 13 | "Aceptado por cliente"              |
+      | 14 | "Validación BGC"                    |
+      | 15 | "Descartado en BGC"                 |
+      | 16 | "Aceptado en BGC"                   |
+      | 17 | "Declina"                           |
+      | 18 | "Acepta"                            |
+      | 19 | "Ingreso"                           |
 
   Scenario: Obtener todos los estados
     Given path ''
@@ -84,12 +84,6 @@ Feature: Pruebas automatizadas para el endpoint /state
       | 2  |
       | 3  |
       | 4  |
-      | 5  |
-      | 6  |
-      | 7  |
-      | 8  |
-      | 9  |
-      | 10 |
       | 11 |
       | 12 |
       | 13 |
