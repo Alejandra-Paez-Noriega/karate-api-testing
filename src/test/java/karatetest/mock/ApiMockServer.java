@@ -1,4 +1,4 @@
-package karate.mock;
+package karatetest.mock;
 
 import java.io.*;
 import java.util.Scanner;

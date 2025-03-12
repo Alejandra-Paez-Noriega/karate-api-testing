@@ -7,7 +7,7 @@ function fn() {
   var config = {
     env: env,
     myVarName: 'someValue',
-    baseUrl: 'http://localhost:8080/state'
+    baseUrl: 'http://localhost:8080/'
   }
   if (env == 'dev') {
     // customize
