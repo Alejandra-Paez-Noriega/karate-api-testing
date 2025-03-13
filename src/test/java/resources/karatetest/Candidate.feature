@@ -17,7 +17,7 @@ Feature: Pruebas de API para Candidatos
   Scenario: Búsqueda por Nombre Inexistente
     Given path 'api/candidate/name/María García'
     When method get
-    Then status 409
+    Then status 404
     And match response contains {"Message":"The candidate does not exist"}
 
   Scenario: Búsqueda de candidato por ID
@@ -29,7 +29,7 @@ Feature: Pruebas de API para Candidatos
   Scenario: Búsqueda de candidato por ID inexistente
     Given path 'api/candidate/id/99999'
     When method get
-    Then status 409
+    Then status 404
     And match response contains {"Message":"The candidate does not exist"}
 
   Scenario: Creación de un nuevo candidato
